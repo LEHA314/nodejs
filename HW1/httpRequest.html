@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Weather</title>
+	</head>
+	<body>
+		<output id="dataWeather"></output>
+			<div>
+			<button id='async'>Async</button>
+			<button id='sync'>Sync</button>
+		</div>
+	<script>
+
+		const URL_WEATHER_API = 'http://api.openweathermap.org/data/2.5/weather?q=Kharkiv,ua&appid=46d72f786c10d0bc9cecf479dc7dcde3';
+
+		const handleRequest = function(response){
+  			document.getElementById('dataWeather').innerHTML += response;
+		}
+
+
+		let getWeather = function(){
+			return new Promise(function(resolve, reject) {
+				let xhr = new XMLHttpRequest();
+				let error;
+
+    			xhr.open('GET', URL_WEATHER_API, true);
+    			xhr.onload = function() {
+      				if (this.status == 200) {
+        				resolve(this.response);
+      				} else {
+        				error = new Error(this.statusText);
+        				error.code = this.status;
+        				reject(error);
+      				}
+    			};
+    			xhr.onerror = function() {
+      				reject(new Error("Network Error"));
+    			};
+    			xhr.send();
+  			});
+		}
+
+
+		document.getElementById('async').addEventListener('click', function(){
+			setTimeout(function(){
+				getWeather().then(response => {
+					handleRequest(response);
+				}, error => {
+					console.log(error)
+				})
+			}, 0);
+
+			getWeather().then(response => {
+				handleRequest(response);
+			}, error => {
+				console.log(error)
+			});
+		})
+
+		document.getElementById('sync').addEventListener('click', function(){
+			getWeather().then(response => {
+					handleRequest(response);
+					return getWeather();
+			})
+			.then(response => {
+				handleRequest(response);
+			})
+			.catch(error => {
+    			console.log(error);
+  			});
+		});
+
+	</script>
+	</body>
+</html>
