@@ -54,7 +54,7 @@ const server = http.createServer( (req, res) => {
   }
 });
 
-static('aaa');
+static('public');
 
 server.listen(3000, 'localhost', () => {
   console.log('Listen server on port 3000');
