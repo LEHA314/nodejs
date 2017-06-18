@@ -1,18 +1,19 @@
 const http = require('http');
 
-let server = http.createServer((req, res) => {
-	res.setHeader('Content-Type', 'text/html');
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-  	res.end('ok');
-});
+const server = http.createServer( (req, res) => {
+  if(req.method === 'GET' && req.url === '/user'){
+    res.write('User info');
+    res.end();
 
-server.on('request', (req, res) => {
-	if(req.path == '/') {
-		res.write('Hello');
-		res.end();
-	}
+    return;
+  }
+  if(req.url === '/user/:id'){
+    res.write('Hey User');
+    res.end();
+  }
+  req.pipe(res);
 });
 
 server.listen(3000, 'localhost', () => {
-	console.log('Server listen port 3000');
-})
+  console.log('Listen server on port 3000');
+});
