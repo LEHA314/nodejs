@@ -1,0 +1,14 @@
+{
+  "name": "lesson_3",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "foo": "node ./index.js"
+  },
+  "author": "user1",
+  "license": "ISC",
+  "dependencies": {
+    "rx": "4.1.0"
+  }
+}
